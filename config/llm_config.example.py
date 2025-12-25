@@ -8,14 +8,19 @@ LLM 配置 - 按照《配置最大系统能力.md》的最优主模型配置
 4. Auditor (DeepSeek-R1): 严苛否决，零温度审计
 
 系统能力 = 问题空间覆盖率 × 失败模式发现概率 × 错误阻断概率 × 稳定性
+
+配置说明：
+1. 复制此文件为 llm_config.py
+2. 将占位符替换为实际的 API Key
+3. llm_config.py 已在 .gitignore 中，不会被提交
 """
 
-# WhatAI 中转 API 配置
-WHATAI_API_KEY = "sk-cbnYQN5y7lWjyNSgASgf3Gr9lumP1vYN2B2r9vpF6x9M7QRL"
+# WhatAI 中转 API 配置（接入 Claude 和 GPT）
+WHATAI_API_KEY = "your-whatai-api-key-here"
 WHATAI_BASE_URL = "https://api.whatai.cc/v1"
 
 # DeepSeek 官方 API 配置
-DEEPSEEK_API_KEY = "sk-f71caf6ed44145b683fcd816b5171b4a"
+DEEPSEEK_API_KEY = "your-deepseek-api-key-here"
 DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"
 
 # Planner: Claude 4.5 - 扩展解空间
@@ -100,11 +105,11 @@ Auditor    | DeepSeek-R1       | DeepSeek 官方   | 0.0  | 零温度审计
 API 配置：
 - WhatAI 中转: https://api.whatai.cc/v1
   - 支持 Claude 和 GPT 系列模型
-  - API Key: sk-cbnY...7QRL
+  - API Key: 请替换为您的 WhatAI API Key
   
 - DeepSeek 官方: https://api.deepseek.com/v1
   - 支持 DeepSeek-R1 推理模型
-  - API Key: sk-f71c...1b4a
+  - API Key: 请替换为您的 DeepSeek API Key
 
 如遇连接问题，可尝试：
 - https://api.whatai.cc
