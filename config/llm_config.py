@@ -70,6 +70,19 @@ auditor_config = {
     "cache_seed": None
 }
 
+# Peer Analyst: GPT-4o - 建设性分析
+peer_analyst_config = {
+    "config_list": [
+        {
+            "model": "gpt-4o",  # GPT-4o
+            "api_key": WHATAI_API_KEY,
+            "base_url": WHATAI_BASE_URL
+        }
+    ],
+    "temperature": 0.4,  # 建设性分析，适度创造性
+    "cache_seed": None
+}
+
 # 配置说明
 """
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -79,6 +92,7 @@ Agent      | 模型              | API 来源        | 温度  | 作用
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Planner    | Claude 4.5        | WhatAI 中转     | 0.3  | 扩展解空间
 Red Team   | DeepSeek-R1       | DeepSeek 官方   | 0.1  | 构造反例
+Peer Analyst | GPT-4o          | WhatAI 中转     | 0.4  | 建设性分析
 Executor   | GPT-5.2           | WhatAI 中转     | 0.2  | 工程执行
 Auditor    | DeepSeek-R1       | DeepSeek 官方   | 0.0  | 零温度审计
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -87,15 +101,18 @@ Auditor    | DeepSeek-R1       | DeepSeek 官方   | 0.0  | 零温度审计
 1. 认知多样性
    - Claude (Planner): 战略思考和创造性方案
    - DeepSeek (Red Team): 严格推理和反例构造
+   - GPT (Peer Analyst): 建设性分析和价值评估
    - GPT (Executor): 工程实现和工具调用
 
-2. 相互制约
-   - Planner 创造性方案 → Red Team 严格质疑
+2. 相互制约与平衡
+   - Planner 创造性方案 → Red Team 严格质疑 → Peer Analyst 建设性分析
+   - Red Team 负面攻击与 Peer Analyst 正面分析形成决策平衡
    - Executor 实现方案 → Auditor 零温度审计
 
 3. 降低系统性错误
    - 不同模型不会犯相同错误
    - 高置信错误被多层检验拦截
+   - 正反分析结合减少认知偏见
 
 API 配置：
 - WhatAI 中转: https://api.whatai.cc/v1

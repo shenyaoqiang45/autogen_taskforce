@@ -7,8 +7,9 @@ AI 特种部队 - 基于 AutoGen 的多智能体协作系统，遵循《AI 特�
 本项目实现了一个人类指挥官与 AI 智能体协作的决策系统，**采用异构模型配置**以最大化系统能力，包含以下角色：
 
 - **Commander (人类指挥官)**: 拥有最终决策权和责任
-- **Planner (战术策划官)**: 将目标拆解为可执行方案 *[Claude 4.5]*
+- **Planner (战术策划官)**: 将目标拆解为 2 个可执行方案 *[Claude 4.5]*
 - **Red Team (红队)**: 寻找方案漏洞和风险 *[DeepSeek-R1]*
+- **Peer Analyst (同行分析师)**: 提供建设性分析和价值评估 *[GPT-4o]*
 - **Executor (执行专家)**: 将决策转化为具体行动 *[GPT-5.2]*
 - **Auditor (审计官)**: 评估执行结果 *[DeepSeek-R1]*
 
@@ -77,6 +78,7 @@ DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"
 |-------|------|---------|------|------|
 | **Planner** | Claude 4.5 | WhatAI 中转 | 0.3 | 最强解空间扩展能力 |
 | **Red Team** | DeepSeek-R1 | DeepSeek 官方 | 0.1 | 严格推理和反例构造 |
+| **Peer Analyst** | GPT-4o | WhatAI 中转 | 0.4 | 建设性分析和价值评估 |
 | **Executor** | GPT-5.2 | WhatAI 中转 | 0.2 | 工程化能力强 |
 | **Auditor** | DeepSeek-R1 | DeepSeek 官方 | 0.0 | 零温度严格审计 |
 
@@ -92,7 +94,11 @@ DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"
    - Red Team (DeepSeek-R1) 的推理方式不同于 Planner (Claude 4.5)
    - 更容易发现方案中的逻辑漏洞
 
-3. **降低高置信错误的发布概率**
+3. **提供平衡决策视角**
+   - Peer Analyst (GPT-4o) 提供建设性分析和价值评估
+   - 平衡 Red Team 的负面攻击，帮助人类指挥官全面评估方案
+
+4. **降低高置信错误的发布概率**
    - 不是减少错误生成，而是确保错误被发现
    - Auditor 使用独立模型，避免"一致性错觉"
 
@@ -108,11 +114,12 @@ python run.py
 
 **运行流程**：
 1. 输入战略目标（例如：开发一个用户管理系统）
-2. **Planner (Claude 4.5)** 制定 2-4 个可执行方案
+2. **Planner (Claude 4.5)** 制定 2 个可执行方案
 3. **Red Team (DeepSeek-R1)** 对每个方案进行风险评估
-4. **Commander (你)** 选择执行方案
-5. **Executor (GPT-5.2)** 生成具体执行计划
-6. **Auditor (DeepSeek-R1)** 审计执行质量
+4. **Peer Analyst (GPT-4o)** 提供建设性分析和价值评估
+5. **Commander (你)** 选择执行方案
+6. **Executor (GPT-5.2)** 生成具体执行计划
+7. **Auditor (DeepSeek-R1)** 审计执行质量
 
 **控制台输出示例**：
 ```
@@ -126,6 +133,10 @@ python run.py
 ...
 
 🔴 Red Team 正在评估风险... [模型: deepseek-reasoner]
+--------------------------------------------------------------------------------
+...
+
+🔍 Peer Analyst 正在进行分析... [模型: gpt-4o]
 --------------------------------------------------------------------------------
 ...
 
@@ -239,6 +250,7 @@ autogen_taskforce/
 ├── agents/                      # 智能体模块
 │   ├── planner.py              # 战术策划官 (Claude 4.5)
 │   ├── red_team.py             # 红队 (DeepSeek-R1)
+│   ├── peer_analyst.py         # 同行分析师 (GPT-4o)
 │   ├── executor.py             # 执行专家 (GPT-5.2)
 │   └── auditor.py              # 审计官 (DeepSeek-R1)
 ├── config/                      # 配置文件
